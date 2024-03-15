@@ -26,6 +26,11 @@ from ema_pytorch import EMA
 
 from accelerate import Accelerator
 
+import os
+
+os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+os.environ['TORCH_USE_CUDA_DSA'] = '1'
+
 # constants
 
 ModelPrediction =  namedtuple('ModelPrediction', ['pred_noise', 'pred_x_start'])
@@ -969,7 +974,7 @@ class Trainer(object):
 # example
 
 if __name__ == '__main__':
-    num_classes = 5
+    num_classes = 15
 
     model = Unet(
         dim = 64,
@@ -988,10 +993,11 @@ if __name__ == '__main__':
 
     trainer = Trainer(
     diffusion,
-    folder = 'Train',
+    # folder = 'Train',
+    folder = '/home/yoos-bii/Desktop/data_tct/train',
     num_classes=num_classes,
     results_folder='Checkpoint-diffusion/results_cond_512TO256_GTEX',
-    train_batch_size = 26,
+    train_batch_size = 1,
     save_and_sample_every=10000,
     train_lr = 1e-5,
     train_num_steps = 300000,         # total training steps
